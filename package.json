@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bs58": "^6.0.0",
+    "bs58": "^5.0.0",
     "node-fetch": "^3.3.2",
     "tweetnacl": "^1.0.3"
   }
