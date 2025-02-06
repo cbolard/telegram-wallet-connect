@@ -1,10 +1,9 @@
 // netlify/functions/verify.js
 
-const nacl = require("tweetnacl");
-const bs58 = require("bs58");
+import nacl from "tweetnacl";
+import bs58 from "bs58";
 
-exports.handler = async function(event, context) {
-  // On accepte uniquement la méthode POST
+export async function handler(event, context) {
   if (event.httpMethod !== "POST") {
     return {
       statusCode: 405,
@@ -65,4 +64,4 @@ exports.handler = async function(event, context) {
       }),
     };
   }
-};
+}
