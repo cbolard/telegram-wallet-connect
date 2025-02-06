@@ -10,36 +10,29 @@
   <p id="status"></p>
 
   <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const challenge = urlParams.get('challenge');
+
     async function connectAndSign() {
       const status = document.getElementById('status');
 
-      // Vérifie si Phantom est installé
       if (!window.solana || !window.solana.isPhantom) {
         status.innerText = "Phantom Wallet n'est pas détecté. Installez l'extension Phantom.";
         return;
       }
 
       try {
-        // Connexion à Phantom
         const resp = await window.solana.connect();
         const publicKey = resp.publicKey.toString();
         status.innerText = `Wallet connecté : ${publicKey}`;
 
-        // Récupère le challenge depuis ton backend (ici en dur pour l'exemple)
-        // Dans une vraie implémentation, fais une requête pour obtenir le challenge unique de l'utilisateur.
-        const challenge = "exemple_de_challenge_a_signer";
-
-        // Encode le message à signer
         const encodedMessage = new TextEncoder().encode(challenge);
 
-        // Demande à Phantom de signer le message
         const { signature } = await window.solana.signMessage(encodedMessage, "utf8");
 
-        // Convertir la signature en base64 pour l'envoi
         const signatureBase64 = btoa(String.fromCharCode(...new Uint8Array(signature)));
 
-        // Envoi du publicKey, du challenge et de la signature à ton backend pour vérification
-        const response = await fetch('https://ton-backend.com/api/verify', {
+        const response = await fetch('/.netlify/functions/verify', { 
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
